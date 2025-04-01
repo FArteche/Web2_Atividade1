@@ -18,12 +18,12 @@ import jakarta.validation.Valid;
 @Controller
 @RequestMapping("/professor")
 public class ProfessorController {
-    
+
     @Autowired
     private ProfessorService professorService;
 
     @GetMapping
-    public String listar (Model model){
+    public String listar(Model model) {
         model.addAttribute("professor", professorService.findAll());
         return "professor/listar";
     }
@@ -36,7 +36,7 @@ public class ProfessorController {
 
     @PostMapping("/salvar")
     public String salvar(@Valid ProfessorModel professor, BindingResult result, RedirectAttributes attributes) {
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             return "professor/form";
         }
 
@@ -46,13 +46,20 @@ public class ProfessorController {
     }
 
     @GetMapping("/{id}/editar")
-        public String editar(@PathVariable int id, Model model){
-            model.addAttribute("professor", professorService.findById(id)
+    public String editar(@PathVariable int id, Model model) {
+        model.addAttribute("professor", professorService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Professor inválido: " + id)));
-            return "professor/form";
-        }
+        return "professor/form";
     }
-    
 
-
-
+    @GetMapping("/{id}/excluir")
+    public String excluir(@PathVariable int id, RedirectAttributes attributes) {
+        try {
+            professorService.deleteById(id);
+            attributes.addFlashAttribute("Mensagem", "Professor excluído com sucesso!");
+        } catch (Exception e) {
+            attributes.addFlashAttribute("Mensagem", "Erro ao excluir professor!");
+        }
+        return "redirect:/professores";
+    }
+}
