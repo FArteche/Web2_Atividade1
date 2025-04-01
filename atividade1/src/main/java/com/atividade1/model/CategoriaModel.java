@@ -1,11 +1,13 @@
 package com.atividade1.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
@@ -19,12 +21,18 @@ public class CategoriaModel implements Serializable{
 
     @NotBlank
     private String nome;
+    
+    @OneToMany(mappedBy = "categoria")
+    private List<CursoModel> cursos;
 
-    public CategoriaModel(int id, @NotBlank String nome) {
-        this.id = id;
+
+    //CONSTUTORES
+    public CategoriaModel(String nome){
         this.nome = nome;
     }
-
+    public CategoriaModel() {
+    }
+    //GETTERS E SETTERS
     public int getId() {
         return id;
     }
@@ -40,4 +48,14 @@ public class CategoriaModel implements Serializable{
     public void setNome(String nome) {
         this.nome = nome;
     }
+
+    public List<CursoModel> getCursos() {
+        return cursos;
+    }
+
+    public void setCursos(List<CursoModel> cursos) {
+        this.cursos = cursos;
+    }
+
+    
 }
