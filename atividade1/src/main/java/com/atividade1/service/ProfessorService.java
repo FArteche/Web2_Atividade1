@@ -6,31 +6,28 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.atividade1.model.ProfessorModel;
+import com.atividade1.model.Professor;
 import com.atividade1.repository.ProfessorRepository;
 
 @Service
 public class ProfessorService {
+
     @Autowired
     private ProfessorRepository professorRepository;
 
-    public List<ProfessorModel> findAll() {
+    public List<Professor> findAll() {
         return professorRepository.findAll();
     }
 
-    public Optional<ProfessorModel> findById(int id) {
+    public Optional<Professor> findById(Long id) {
         return professorRepository.findById(id);
     }
 
-    public ProfessorModel save(ProfessorModel professor) {
+    public Professor save(Professor professor) {
         return professorRepository.save(professor);
     }
 
-    public void deleteById(int id) {
+    public void deleteById(Long id) {
         professorRepository.deleteById(id);
-    }
-
-    public void update(ProfessorModel professor) {
-        professorRepository.save(professor);
     }
 }

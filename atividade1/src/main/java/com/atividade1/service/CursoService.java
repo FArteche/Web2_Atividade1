@@ -1,36 +1,32 @@
 package com.atividade1.service;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.atividade1.model.Curso;
+import com.atividade1.repository.CursoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.atividade1.model.CursoModel;
-import com.atividade1.repository.CursoRepository;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CursoService {
+
     @Autowired
     private CursoRepository cursoRepository;
 
-    public List<CursoModel> findAll() {
+    public List<Curso> findAll() {
         return cursoRepository.findAll();
     }
 
-    public Optional<CursoModel> findById(int id){
+    public Optional<Curso> findById(Long id) {
         return cursoRepository.findById(id);
     }
 
-    public CursoModel save(CursoModel curso){
+    public Curso save(Curso curso) {
         return cursoRepository.save(curso);
     }
 
-    public void deleteById(int id){
+    public void deleteById(Long id) {
         cursoRepository.deleteById(id);
-    }
-
-    public void update(CursoModel curso){
-        cursoRepository.save(curso);
     }
 }

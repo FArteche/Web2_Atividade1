@@ -1,22 +1,21 @@
+
 package com.atividade1.controller;
+
+import com.atividade1.model.Professor;
+import com.atividade1.service.ProfessorService;
+
+import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.atividade1.model.ProfessorModel;
-import com.atividade1.service.ProfessorService;
-
-import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/professor")
+@RequestMapping("/professores")
 public class ProfessorController {
 
     @Autowired
@@ -24,41 +23,41 @@ public class ProfessorController {
 
     @GetMapping
     public String listar(Model model) {
-        model.addAttribute("professor", professorService.findAll());
-        return "professor/listar";
+        model.addAttribute("professores", professorService.findAll());
+        return "professor/lista";
     }
 
     @GetMapping("/novo")
     public String novo(Model model) {
-        model.addAttribute("professor", new ProfessorModel());
+        model.addAttribute("professor", new Professor());
         return "professor/form";
     }
 
     @PostMapping("/salvar")
-    public String salvar(@Valid ProfessorModel professor, BindingResult result, RedirectAttributes attributes) {
+    public String salvar(@Valid Professor professor, BindingResult result, RedirectAttributes attributes) {
         if (result.hasErrors()) {
             return "professor/form";
         }
-
+        
         professorService.save(professor);
-        attributes.addFlashAttribute("Mensagem", "Professor Salvo com Sucesso!");
-        return "redirect:/professor";
+        attributes.addFlashAttribute("mensagem", "Professor salvo com sucesso!");
+        return "redirect:/professores";
     }
 
     @GetMapping("/{id}/editar")
-    public String editar(@PathVariable int id, Model model) {
+    public String editar(@PathVariable Long id, Model model) {
         model.addAttribute("professor", professorService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Professor inválido: " + id)));
         return "professor/form";
     }
 
     @GetMapping("/{id}/excluir")
-    public String excluir(@PathVariable int id, RedirectAttributes attributes) {
+    public String excluir(@PathVariable Long id, RedirectAttributes attributes) {
         try {
             professorService.deleteById(id);
-            attributes.addFlashAttribute("Mensagem", "Professor excluído com sucesso!");
+            attributes.addFlashAttribute("mensagem", "Professor excluído com sucesso!");
         } catch (Exception e) {
-            attributes.addFlashAttribute("Mensagem", "Erro ao excluir professor!");
+            attributes.addFlashAttribute("mensagem", "Erro ao excluir professor!");
         }
         return "redirect:/professores";
     }

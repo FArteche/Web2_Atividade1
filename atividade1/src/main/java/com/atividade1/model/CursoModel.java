@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name="curso")
@@ -22,19 +23,19 @@ public class CursoModel implements Serializable{
     private String nome;
     @NotBlank
     private String descricao;
-    @NotBlank
+    @NotNull
     private Date dataInicio;
-    @NotBlank
+    @NotNull
     private Date dataFim;
     
-    private String imgPath;
+    private String imagem;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "professor_id")
     private ProfessorModel professor;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "categoria_id")
     private CategoriaModel categoria;
     //CONSTUTORES
     public CursoModel(@NotBlank String nome, @NotBlank String descricao, @NotBlank Date dataInicio,
@@ -89,12 +90,12 @@ public class CursoModel implements Serializable{
         this.dataFim = dataFim;
     }
 
-    public String getImgPath() {
-        return imgPath;
+    public String getImagem() {
+        return imagem;
     }
 
-    public void setImgPath(String imgPath) {
-        this.imgPath = imgPath;
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
     }
 
     public ProfessorModel getProfessor() {

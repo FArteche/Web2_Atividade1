@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/layout}">
+
+<head>
+    <title th:text="${curso.id == null ? 'Novo Curso' : 'Editar Curso'}"></title>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <h1 th:text="${curso.id == null ? 'Novo Curso' : 'Editar Curso'}"></h1>
+
+        <div class="card">
+            <div class="card-body">
+                <form th:action="@{/cursos/salvar}" th:object="${curso}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" th:field="*{id}">
+                    <input type="hidden" th:field="*{imagem}">
+
+                    <div class="mb-3">
+                        <label for="nome" class="form-label">Nome</label>
+                        <input type="text" class="form-control" th:field="*{nome}" id="nome" required>
+                        <div class="text-danger" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="descricao" class="form-label">Descrição</label>
+                        <textarea class="form-control" th:field="*{descricao}" id="descricao" rows="3"
+                            required></textarea>
+                        <div class="text-danger" th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="categoria" class="form-label">Categoria</label>
+                        <select class="form-select" id="categoria" name="categoria" required>
+                            <option value="">Selecione uma categoria</option>
+                            <option th:each="cat : ${categorias}" th:value="${cat.id}" th:text="${cat.nome}"
+                                th:selected="${curso.categoria != null && curso.categoria.id == cat.id}"></option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="professor" class="form-label">Professor</label>
+                        <select class="form-select" id="professor" name="professor" required>
+                            <option value="">Selecione um professor</option>
+                            <option th:each="prof : ${professores}" th:value="${prof.id}" th:text="${prof.nome}"
+                                th:selected="${curso.professor != null && curso.professor.id == prof.id}"></option>
+                        </select>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="dataInicio" class="form-label">Data de Início</label>
+                            <input type="date" class="form-control" th:field="*{dataInicio}" id="dataInicio" required>
+                            <div class="text-danger" th:if="${#fields.hasErrors('dataInicio')}"
+                                th:errors="*{dataInicio}"></div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="dataFinal" class="form-label">Data Final</label>
+                            <input type="date" class="form-control" th:field="*{dataFinal}" id="dataFinal" required>
+                            <div class="text-danger" th:if="${#fields.hasErrors('dataFinal')}" th:errors="*{dataFinal}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Imagem</label>
+                        <input type="file" class="form-control" id="file" name="file">
+                        <div class="mt-2" th:if="${curso.imagem}">
+                            <p>Imagem atual:</p>
+                            <img th:src="@{/images/{img}(img=${curso.imagem})}" alt="Imagem do curso"
+                                style="max-height: 100px;">
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                        <a th:href="@{/cursos}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
